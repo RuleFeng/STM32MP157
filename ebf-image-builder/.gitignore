@@ -1,0 +1,12 @@
+latest_version
+ignore/
+deploy/
+git/
+*.host
+release
+.project
+*linux*/
+*uboot*/
+build/
+history/
+rkbin/
