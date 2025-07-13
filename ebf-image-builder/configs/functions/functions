@@ -1,4 +1,0 @@
-## Common functions
-source configs/functions/common-functions
-source configs/functions/git-repo
-source configs/functions/build
