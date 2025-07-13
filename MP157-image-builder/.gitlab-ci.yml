@@ -1,0 +1,44 @@
+variables:
+  #git 邮箱
+  GIT_USEREMAIL: hjw0415@outlook.com
+  #git 用户名
+  GIT_USERNAME: hejiawen
+
+# 定义 stages
+stages:
+
+  - build_image
+
+# 定义 build_image  job
+build_image_job:
+
+  tags: 
+    - ENABLE
+
+  stage: build_image
+
+  #指定分支更新进行编译
+  only:
+    #- image-builder_2.0
+    - master
+
+  before_script:
+ 
+    - git config --global user.email "$GIT_USEREMAIL"
+    - git config --global user.name "$GIT_USERNAME"
+
+  script:
+
+    #编译镜像 
+    - if [  $uboot_branch ];then
+    - ./env/ci.sh  $uboot_branch
+    - elif [  $kernel_branch ]; then
+    - ./env/ci.sh  $kernel_branch
+    - else ./env/ci.sh
+    - fi
+
+
+  when: delayed
+  start_in: 180 minutes
+  #start_in: 10 sec
+
