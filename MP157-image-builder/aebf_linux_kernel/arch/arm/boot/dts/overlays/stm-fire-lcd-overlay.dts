@@ -1,0 +1,75 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
+/*
+ * Copyright (C) STMicroelectronics 2018 - All Rights Reserved
+ * Author: Alexandre Torgue <alexandre.torgue@st.com>.
+ */
+
+/dts-v1/;
+/plugin/;
+//#include "../stm32mp157c.dtsi"
+#include <dt-bindings/pinctrl/stm32-pinfunc.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/mfd/st,stpmic1.h>
+#include <dt-bindings/gpio/gpio.h>
+
+/{
+	fragment@0{
+		target-path="/";
+		__overlay__{
+			panel_rgb: panel-rgb {
+				compatible = "innolux,at070tn92";
+				status = "okay";
+
+				clock-frequency = <27000000>;
+				hactive = <800>;
+				vactive = <480>;
+	                        hfront-porch = <45>;
+	                        hback-porch = <46>;
+	                        hsync-len = <1>;
+	                        vback-porch = <23>;
+	                        vfront-porch = <13>;
+	                        vsync-len = <3>;	
+				vrefresh = <60>;		
+				bits-per-pixel_0=<24>; //unused
+				port {
+					panel_in_rgb: endpoint {
+						remote-endpoint = <&ltdc_ep1_out>;
+					};
+				};
+			};
+		};
+	};
+
+
+
+
+	fragment@4 {
+		target=<&ltdc>;
+		__overlay__{
+			port {
+				#address-cells = <1>;
+				#size-cells = <0>;
+				ltdc_ep1_out: endpoint@1 {
+					reg = <1>;
+					remote-endpoint = <&panel_in_rgb>;
+				};		
+			};
+		};
+	};
+};
+
+/{
+	__overrides__ {
+		clock-frequency_0 = <&panel_rgb>,"clock-frequency:0";
+		hactive_0 = <&panel_rgb>,"hactive:0";
+		vactive_0 = <&panel_rgb>,"vactive:0";
+		hfront-porch_0 = <&panel_rgb>,"hfront-porch:0";
+		hback-porch_0 = <&panel_rgb>,"hback-porch:0";
+		hsync-len_0 = <&panel_rgb>,"hsync-len:0";
+		vback-porch_0 = <&panel_rgb>,"vback-porch:0";
+		vfront-porch_0 = <&panel_rgb>,"vfront-porch:0";	
+		vsync-len_0 = <&panel_rgb>,"vsync-len:0";	
+		bits-per-pixel_0 = <&panel_rgb>,"bits-per-pixel:0";
+	};
+
+};
